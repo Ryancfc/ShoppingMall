@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ryan.netease.components.main.dao.IOrderDao">
+
+	<insert id="buyGoods" parameterType="java.util.Map">
+		insert into netease_order(
+			goodsId,buyerId,amount,price,money,isCompleted,time
+		)
+		values(
+			#{goodsId,jdbcType=INTEGER},
+			#{buyerId,jdbcType=INTEGER},
+			#{amount,jdbcType=INTEGER},
+			#{price,jdbcType=INTEGER},
+			#{money,jdbcType=INTEGER},
+			0,
+			#{time,jdbcType=DATE}		
+		)
+	</insert>
+	
+	<select id="findGoodsWithoutPay" parameterType="java.util.Map" resultType="java.util.Map">
+		select (select title from netease_goods where netease_goods.id=a.goodsId) title, a.price, a.amount, a.money
+		from netease_order a
+		where isCompleted=0 and buyerId=#{buyerId,jdbcType=INTEGER}
+	</select>
+	
+	<update id="payGoods" parameterType="java.util.Map">
+		update netease_order
+			set isCompleted=1
+		where isCompleted=0 and buyerId=#{buyerId,jdbcType=INTEGER}
+	</update>
+	
+	<select id="findPayedGoods" parameterType="java.util.Map" resultType="java.util.Map">
+		select b.title,b.pic,b.picsrc,a.price,a.amount,a.money,a.time
+			from netease_order a
+			left join netease_goods b on a.goodsId=b.id
+		where a.isCompleted=1 and a.buyerId=#{buyerId,jdbcType=INTEGER}
+	</select>
+	
+</mapper>

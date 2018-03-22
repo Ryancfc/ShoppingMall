@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ryan.netease.components.main.dao.IGoodsDao">
+
+	
+	<select id="findGoods" resultType="java.util.Map" parameterType="java.util.Map">
+		select * 
+		from netease_goods
+		where 1=1
+		<if test="id!=null and id>0">
+			and id=#{id,jdbcType=INTEGER}
+		</if>
+		<if test="title!=null and title!=''">
+			and title=#{title,jdbcType=VARCHAR}
+		</if>
+		<if test="summary!=null and summary!=''">
+			and summary=#{summary,jdbcType=VARCHAR}
+		</if>
+		<if test="content!=null and content!=''">
+			and content=#{content,jdbcType=VARCHAR}
+		</if>
+		<if test="sellerId!=null and sellerId>0">
+			and sellerId=#{sellerId,jdbcType=INTEGER}
+		</if>
+	</select>
+	
+	<select id="findGoodsBySellerId" resultType="java.util.Map" parameterType="java.util.Map">
+		select a.*,
+			case when (select sum(netease_order.amount) from netease_order where netease_order.goodsId=a.id) is null then 0
+				 else (select sum(netease_order.amount) from netease_order where netease_order.goodsId=a.id)
+			end selledNum
+		from netease_goods a
+		where 1=1
+		<if test="id!=null and id>0">
+			and a.id=#{id,jdbcType=INTEGER}
+		</if>
+		<if test="title!=null and title!=''">
+			and title=#{title,jdbcType=VARCHAR}
+		</if>
+		<if test="summary!=null and summary!=''">
+			and summary=#{summary,jdbcType=VARCHAR}
+		</if>
+		<if test="content!=null and content!=''">
+			and content=#{content,jdbcType=VARCHAR}
+		</if>
+		<if test="sellerId!=null and sellerId>0">
+			and a.sellerId=#{sellerId,jdbcType=INTEGER}
+		</if>
+	</select>
+	
+	<delete id="deleteGoodsById" parameterType="java.util.Map">
+		delete 
+		from netease_goods
+		where id=#{id,jdbcType=INTEGER}
+	</delete>
+	
+	<update id="updateGoodsById" parameterType="java.util.Map">
+		update netease_goods
+		<set>
+			<if test="title!=null and title!=''">
+				 title=#{title,jdbcType=VARCHAR},
+			</if>
+			<if test="summary!=null and summary!=''">
+				 summary=#{summary,jdbcType=VARCHAR},
+			</if>
+			<if test="content!=null and content!=''">
+				 content=#{content,jdbcType=VARCHAR},
+			</if>
+			<if test="price!=null">
+				 price=#{price,jdbcType=INTEGER},
+			</if>
+			<if test="pic!=null">
+				 pic=#{pic,jdbcType=INTEGER},
+			</if>
+			<if test="picsrc!=null and picsrc!=''">
+				 picsrc=#{picsrc,jdbcType=VARCHAR},
+			</if>
+			<if test="sellerId!=null">
+				 sellerId=#{sellerId,jdbcType=INTEGER},
+			</if>
+		</set>
+		where id=#{id,jdbcType=INTEGER}
+	
+	</update>
+	
+	<insert id="insertGoodsPic" useGeneratedKeys="true" keyProperty="id" parameterType="com.ryan.netease.components.main.domain.Goods">
+		insert into netease_goods(pic)
+		values(#{pic})
+	</insert>
+	
+	<insert id="insertGoods" parameterType="java.util.Map">
+		insert into netease_goods(title,summary,content,pic,picsrc,price,sellerId)
+		values(#{title},#{summary},#{content},#{pic},#{picsrc},#{price},#{sellerId})
+	</insert>
+	
+	<select id="findGoodsWithMarked" parameterType="java.util.Map" resultType="java.util.Map">
+		select a.*,
+			case when (select b.price from netease_order b where b.goodsId=a.id and b.buyerId=#{buyerId,jdbcType=INTEGER} and b.isCompleted=1) &gt; 0
+				then (select b.price from netease_order b where b.goodsId=a.id and b.buyerId=#{buyerId,jdbcType=INTEGER} and b.isCompleted=1)
+				else 0 end buyedPrice,
+			case when (select count(*) from netease_order b where b.goodsId=a.id and b.buyerId=#{buyerId,jdbcType=INTEGER} and b.isCompleted=1) &gt; 0 
+				then 1
+			    else 0 end isBuyed
+	    from netease_goods a
+	    <if test="isBuyed!=null and isBuyed>0">
+	    where a.id not in (select b.goodsId from netease_order b where b.buyerId=#{buyerId,jdbcType=INTEGER} and (b.buyerId=0 or b.buyerId=1))
+	    </if>
+	</select>
+	
+</mapper>

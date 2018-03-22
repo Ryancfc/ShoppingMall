@@ -1,0 +1,94 @@
+* {
+	padding: 0px;
+	margin: 0px;
+}
+
+#container {
+	background-color: #ffffff;
+	z-index: 1;
+	position: absolute;
+	left: 0px;
+	top: 0px
+}
+
+
+body {
+	font-family: Monospace;
+	background-color: #f0f0f0;
+	margin: 0px;
+	overflow: hidden;
+}
+
+
+.info {
+	position: absolute;
+	background-color: black;
+	opacity: 0.8;
+	color: white;
+	text-align: center;
+	top: 0px;
+	width: 100%;
+}
+
+.info a {
+	color: #00ffff;
+}
+
+.popover-show {
+	position: absolute;
+	left: 190px;
+	top: 140px z-index:9999;
+}
+
+
+.popover{
+	border: 2px solid #5bc0de;
+	border-radius:15px;
+	padding:0px !important;
+}
+.popover-title{
+	background-color:#5bc0de !important;
+	color:#fff;
+	text-align:center;
+	border-radius:10px 10px 0px 0px;
+}
+
+.table-bhxx{
+	width:200px;
+	display:inline-block;
+	border:0px !important;
+	margin-bottom:0px !important;
+}
+
+
+.table-bhxx tr{
+	width:200px;
+	display:inline-block;
+	border:0px !important;
+}
+.table-bhxx tr td{
+	width:200px;
+	border:0px !important;
+}
+
+.btn-disease{
+	background-color:#5bc0de;
+	color:#fff;
+	border-radius:15px;
+	font-size:12px;
+	text-align:center;
+	margin-left:28px;
+	width:130px;
+}
+
+
+.btn-disease:hover{
+	background-color:#629CDE;
+	color:#fff;
+	border-radius:15px;
+}
+
+.disease-title{
+	font-weight:bold;
+	text-align:right;
+}
