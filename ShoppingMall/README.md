@@ -1,7 +1,7 @@
 # ShoppingMall
 ShoppingMall是一个简单的java web项目，基于SSM框架，实现了网站基本功能。
 
-# 功能介绍
+## 功能介绍
 R1展示（首页）
 R1.1系统的基本界面为卖家所有内容的展示
 R1.1.1系统的细节为内容的标题、图片和价格
@@ -50,7 +50,7 @@ R8.2可以修改内容的全部细节：标题、摘要、图片、正文和价�
 
 -------------------
 在这个项目里主要实现了以下技术：
-* spring-webmvc
+* springMVC
 * mybatis
 * mysql
 * bootstrap
