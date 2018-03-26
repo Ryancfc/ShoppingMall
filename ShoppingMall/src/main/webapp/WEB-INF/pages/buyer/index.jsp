@@ -271,7 +271,7 @@
 		        	$("#zy").val(data.summary);
 		        	$("#zw").val(data.content);
 		        	$("#jg").val(data.price);
-		        	if(data.isBuyed==1){
+		        	if(isBuyed==1){
 		        		$("#jg").val(buyedPrice);
 		        		$('#buy_btn').attr('disabled',"true");
 		        	}		        	
