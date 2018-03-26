@@ -95,15 +95,15 @@
 	
 	<select id="findGoodsWithMarked" parameterType="java.util.Map" resultType="java.util.Map">
 		select a.*,
-			case when (select b.price from netease_order b where b.goodsId=a.id and b.buyerId=#{buyerId,jdbcType=INTEGER} and b.isCompleted=1) &gt; 0
-				then (select b.price from netease_order b where b.goodsId=a.id and b.buyerId=#{buyerId,jdbcType=INTEGER} and b.isCompleted=1)
+			case when (select b.price from netease_order b where b.goodsId=a.id and b.buyerId=#{buyerId,jdbcType=INTEGER}) &gt; 0
+				then (select b.price from netease_order b where b.goodsId=a.id and b.buyerId=#{buyerId,jdbcType=INTEGER})
 				else 0 end buyedPrice,
-			case when (select count(*) from netease_order b where b.goodsId=a.id and b.buyerId=#{buyerId,jdbcType=INTEGER} and b.isCompleted=1) &gt; 0 
+			case when (select count(*) from netease_order b where b.goodsId=a.id and b.buyerId=#{buyerId,jdbcType=INTEGER} ) &gt; 0 
 				then 1
 			    else 0 end isBuyed
 	    from netease_goods a
 	    <if test="isBuyed!=null and isBuyed>0">
-	    where a.id not in (select b.goodsId from netease_order b where b.buyerId=#{buyerId,jdbcType=INTEGER} and (b.buyerId=0 or b.buyerId=1))
+	    where a.id not in (select b.goodsId from netease_order b where b.buyerId=#{buyerId,jdbcType=INTEGER})
 	    </if>
 	</select>
 	
